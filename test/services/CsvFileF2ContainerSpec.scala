@@ -5,6 +5,7 @@ import java.io.{File, PrintWriter}
 import org.scalatest.BeforeAndAfter
 import org.scalatest.mock.MockitoSugar
 import org.scalatestplus.play.PlaySpec
+import play.api.Configuration
 
 /**
   * Created by ydalekorey on 7/22/16.
@@ -13,12 +14,16 @@ class CsvFileF2ContainerSpec extends PlaySpec with MockitoSugar with BeforeAndAf
 
   private var f2Container: F2Container = _
 
+  private var configuration: Configuration = _
+
   before {
     val f2File = new File("f2.csv")
     val content = "1, 2, 3, 4, 5"
     createTestFile(f2File, content)
 
-    f2Container = new CsvFileF2Container(f2File.getAbsolutePath)
+    configuration = Configuration.apply("f2.location"-> f2File.getAbsolutePath)
+
+    f2Container = new CsvFileF2Container(configuration)
 
   }
 

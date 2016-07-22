@@ -1,6 +1,8 @@
 package services
 
-import javax.inject.Singleton
+import javax.inject.{Inject, Singleton}
+
+import play.api.Configuration
 
 import scala.io.Source
 
@@ -12,9 +14,12 @@ trait F1Container {
 }
 
 @Singleton
-class CsvFileF1Container(val f1Location: String) extends F1Container {
+class CsvFileF1Container @Inject() (val configuration: Configuration) extends F1Container {
+
+  val f1Location = configuration.getString("f1.location").getOrElse("f1.csv")
 
   override def getValueByIndex(v1: Int): Int = {
+
     val bufferedSource = Source.fromFile(f1Location)
 
     val numbers = bufferedSource.getLines.next().split(",").map(_.trim).map(_.toInt).toVector

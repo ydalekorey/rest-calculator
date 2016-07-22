@@ -1,7 +1,9 @@
 package services
 
 import java.io.{File, PrintWriter}
-import javax.inject.Singleton
+import javax.inject.{Inject, Singleton}
+
+import play.api.Configuration
 
 import scala.io.Source
 
@@ -15,9 +17,13 @@ trait F2Container {
 }
 
 @Singleton
-class CsvFileF2Container(val f2Location: String) extends F2Container {
+class CsvFileF2Container @Inject() (val configuration: Configuration) extends F2Container {
+
+  val f2Location = configuration.getString("f2.location").getOrElse("f2.csv")
 
   override def writeByIndex(v4: Int, i: Int): Unit = {
+
+
     val bufferedSource = Source.fromFile(f2Location)
     val numbers = bufferedSource.getLines.next().split(",").map(_.trim).toVector
     bufferedSource.close
