@@ -41,10 +41,10 @@ class NumberCalculationControllerSpec extends PlaySpec with MockitoSugar with Re
 
     "return appropriate calculation result" when {
       "v2, v3, v4 values submitted" in {
-        when(numberCalculationService.updateV4thValue(1,2,3)).thenReturn(CalculationResult(true))
+        when(numberCalculationService.updateV4thValue(1,2,3)).thenReturn(CalculationResult(1))
         val result = await(numberCalculationController.postV2V3V4(1,2,3).apply(FakeRequest()))
 
-        result mustBe Ok(Json.toJson(CalculationResult(true)))
+        result mustBe Ok(Json.toJson(CalculationResult(1)))
 
         verify(numberCalculationService).updateV4thValue(1,2,3)
       }

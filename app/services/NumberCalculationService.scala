@@ -17,7 +17,7 @@ trait NumberCalculationService {
 }
 
 @Singleton
-class DefaultNumberCalculationService @Inject() (f2Container: F2Container) extends NumberCalculationService {
+class DefaultNumberCalculationService @Inject() (f1Container: F1Container, f2Container: F2Container) extends NumberCalculationService {
   override def getV1thResult(v1: Int): V1thResult = {
     val f2 = f2Container.getValueByIndex(v1)
     if (f2 > 10) {
@@ -27,5 +27,15 @@ class DefaultNumberCalculationService @Inject() (f2Container: F2Container) exten
     }
   }
 
-  override def updateV4thValue(v2: Int, v3: Int, v4: Int): CalculationResult = ???
+  override def updateV4thValue(v2: Int, v3: Int, v4: Int): CalculationResult = {
+    val f1 = f1Container.getValueByIndex(v3)
+
+    if (f1 + v2 < 10) {
+      f2Container.writeByIndex(v4, f1+v2+10)
+      CalculationResult(0)
+    } else {
+      f2Container.writeByIndex(v4, f1+v2)
+      CalculationResult(1)
+    }
+  }
 }
