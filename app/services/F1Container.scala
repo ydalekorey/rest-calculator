@@ -11,6 +11,8 @@ import scala.io.Source
   */
 trait F1Container {
   def getValueByIndex(v3: Int): Int
+
+  def getSize(): Int
 }
 
 @Singleton
@@ -27,5 +29,15 @@ class CsvFileF1Container @Inject() (val configuration: Configuration) extends F1
     bufferedSource.close
 
     numbers(v1)
+  }
+
+  override def getSize(): Int = {
+    val bufferedSource = Source.fromFile(f1Location)
+
+    val size = bufferedSource.getLines.next().split(",").size
+
+    bufferedSource.close
+
+    size
   }
 }

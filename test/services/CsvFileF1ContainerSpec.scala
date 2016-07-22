@@ -28,10 +28,16 @@ class CsvFileF1ContainerSpec extends PlaySpec with MockitoSugar with BeforeAndAf
   }
 
 
-  "CsvFileF2Container" should {
+  "CsvFileF1Container" should {
     "read appropriate value from specified column in csv file" in {
 
       f1Container.getValueByIndex(3) must equal(4)
+
+    }
+
+    "return correct size" in {
+
+      f1Container.getSize() must equal(5)
 
     }
   }

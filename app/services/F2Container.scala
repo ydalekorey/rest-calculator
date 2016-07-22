@@ -17,9 +17,23 @@ trait F2Container {
 }
 
 @Singleton
-class CsvFileF2Container @Inject() (val configuration: Configuration) extends F2Container {
+class CsvFileF2Container @Inject() (val configuration: Configuration, f1Container: F1Container) extends F2Container {
 
   val f2Location = configuration.getString("f2.location").getOrElse("f2.csv")
+
+  def init(): Unit = {
+    val size = f1Container.getSize()
+
+    val zeroValues = List.fill(size)("0")
+
+    val pw = new PrintWriter(new File(f2Location))
+    val fileContent = zeroValues.mkString(", ")
+    pw.write(fileContent)
+    pw.close
+
+  }
+
+  init()
 
   override def writeByIndex(v4: Int, i: Int): Unit = {
 

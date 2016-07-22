@@ -2,6 +2,7 @@ package services
 
 import java.io.{File, PrintWriter}
 
+import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfter
 import org.scalatest.mock.MockitoSugar
 import org.scalatestplus.play.PlaySpec
@@ -14,6 +15,8 @@ class CsvFileF2ContainerSpec extends PlaySpec with MockitoSugar with BeforeAndAf
 
   private var f2Container: F2Container = _
 
+  private var f1Container: F1Container = _
+
   private var configuration: Configuration = _
 
   before {
@@ -23,25 +26,30 @@ class CsvFileF2ContainerSpec extends PlaySpec with MockitoSugar with BeforeAndAf
 
     configuration = Configuration.apply("f2.location"-> f2File.getAbsolutePath)
 
-    f2Container = new CsvFileF2Container(configuration)
+    f1Container = mock[F1Container]
+
+    when(f1Container.getSize()).thenReturn(2)
+
+    f2Container = new CsvFileF2Container(configuration, f1Container)
 
   }
 
 
   "CsvFileF2Container" should {
-    "read appropriate value from specified column in csv file" in {
+    "write appropriate value to specified column in csv file" in {
 
-      f2Container.getValueByIndex(3) must equal(4)
+      f2Container.writeByIndex(1, 10)
+
+      f2Container.getValueByIndex(1) must equal(10)
 
     }
   }
 
   "CsvFileF2Container" should {
-    "write value to specified column in csv file" in {
+    "init underlying file by zeros" in {
 
-      f2Container.writeByIndex(3, 10)
-
-      f2Container.getValueByIndex(3) must equal(10)
+      f2Container.getValueByIndex(0) must equal(0)
+      f2Container.getValueByIndex(1) must equal(0)
 
     }
   }
