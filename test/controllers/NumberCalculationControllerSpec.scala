@@ -1,10 +1,8 @@
 package controllers
 
 
-import akka.stream.Materializer
-import models.F2
+import models.V1thResult
 
-import scala.concurrent.Future
 import play.api.libs.json.Json
 import play.api.mvc._
 import play.api.test._
@@ -33,12 +31,12 @@ class NumberCalculationControllerSpec extends PlaySpec with MockitoSugar with Re
 
     "return appropriate number" when {
       "v1 index passed" in {
-        when(numberCalculationService.getF2(1)).thenReturn(F2(2))
-        val result = await(numberCalculationController.getF2(1).apply(FakeRequest()))
+        when(numberCalculationService.getV1thResult(1)).thenReturn(V1thResult(2))
+        val result = await(numberCalculationController.getV1thResult(1).apply(FakeRequest()))
 
-        result mustBe Ok(Json.toJson(F2(2)))
+        result mustBe Ok(Json.toJson(V1thResult(2)))
 
-        verify(numberCalculationService).getF2(1)
+        verify(numberCalculationService).getV1thResult(1)
       }
     }
   }

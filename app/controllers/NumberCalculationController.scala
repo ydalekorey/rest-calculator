@@ -9,7 +9,7 @@ import play.api.mvc.{Action, Controller}
 @Singleton
 class NumberCalculationController @Inject() (numberCalculationService: NumberCalculationService) extends Controller {
 
-  def getF2(v1:Int) = Action {
-    Ok(Json.toJson(numberCalculationService.getF2(v1)))
+  def getV1thResult(v1:Int) = Action {
+    Ok(Json.toJson(numberCalculationService.getV1thResult(v1)))
   }
 }
