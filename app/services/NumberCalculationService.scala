@@ -2,12 +2,15 @@ package services
 
 import javax.inject.{Inject, Singleton}
 
-import models.V1thResult
+import models.{CalculationResult, V1thResult}
 
 /**
   * Created by ydalekorey on 7/22/16.
   */
 trait NumberCalculationService {
+
+  def updateV4thValue(v2: Int, v3: Int, v4: Int): CalculationResult
+
 
   def getV1thResult(v1: Int): V1thResult
 
@@ -23,4 +26,6 @@ class DefaultNumberCalculationService @Inject() (f2Container: F2Container) exten
       V1thResult(f2)
     }
   }
+
+  override def updateV4thValue(v2: Int, v3: Int, v4: Int): CalculationResult = ???
 }

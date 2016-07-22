@@ -1,8 +1,7 @@
 package controllers
 
 
-import models.V1thResult
-
+import models.{CalculationResult, V1thResult}
 import play.api.libs.json.Json
 import play.api.mvc._
 import play.api.test._
@@ -37,6 +36,17 @@ class NumberCalculationControllerSpec extends PlaySpec with MockitoSugar with Re
         result mustBe Ok(Json.toJson(V1thResult(2)))
 
         verify(numberCalculationService).getV1thResult(1)
+      }
+    }
+
+    "return appropriate calculation result" when {
+      "v2, v3, v4 values submitted" in {
+        when(numberCalculationService.updateV4thValue(1,2,3)).thenReturn(CalculationResult(true))
+        val result = await(numberCalculationController.postV2V3V4(1,2,3).apply(FakeRequest()))
+
+        result mustBe Ok(Json.toJson(CalculationResult(true)))
+
+        verify(numberCalculationService).updateV4thValue(1,2,3)
       }
     }
   }
