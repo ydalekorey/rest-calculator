@@ -2,11 +2,14 @@ package services
 
 import javax.inject.{Inject, Singleton}
 
+import com.google.inject.ImplementedBy
 import models.{CalculationResult, V1thResult}
 
 /**
   * Created by ydalekorey on 7/22/16.
   */
+
+@ImplementedBy(classOf[DefaultNumberCalculationService])
 trait NumberCalculationService {
 
   def updateV4thValue(v2: Int, v3: Int, v4: Int): CalculationResult

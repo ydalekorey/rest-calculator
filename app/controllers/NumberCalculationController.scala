@@ -2,6 +2,7 @@ package controllers
 
 import javax.inject._
 
+import models.UpdateRequest
 import services.NumberCalculationService
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
@@ -13,7 +14,9 @@ class NumberCalculationController @Inject() (numberCalculationService: NumberCal
     Ok(Json.toJson(numberCalculationService.getV1thResult(v1)))
   }
 
-  def postV2V3V4(v2:Int, v3:Int, v4:Int) = Action {
-    Ok(Json.toJson(numberCalculationService.updateV4thValue(v2,v3,v4)))
+  def postV2V3V4() = Action(parse.json) {implicit request =>
+
+    val ur =  request.body.as[UpdateRequest]
+    Ok(Json.toJson(numberCalculationService.updateV4thValue(ur.v2,ur.v3,ur.v4)))
   }
 }

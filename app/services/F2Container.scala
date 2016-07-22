@@ -3,6 +3,7 @@ package services
 import java.io.{File, PrintWriter}
 import javax.inject.{Inject, Singleton}
 
+import com.google.inject.ImplementedBy
 import play.api.Configuration
 
 import scala.io.Source
@@ -10,6 +11,7 @@ import scala.io.Source
 /**
   * Created by ydalekorey on 7/22/16.
   */
+@ImplementedBy(classOf[CsvFileF2Container])
 trait F2Container {
   def writeByIndex(v4: Int, i: Int): Unit
 

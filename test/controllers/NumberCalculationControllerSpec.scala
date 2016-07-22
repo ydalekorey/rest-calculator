@@ -1,7 +1,8 @@
 package controllers
 
 
-import models.{CalculationResult, V1thResult}
+import akka.stream.Materializer
+import models.{CalculationResult, UpdateRequest, V1thResult}
 import play.api.libs.json.Json
 import play.api.mvc._
 import play.api.test._
@@ -18,6 +19,8 @@ class NumberCalculationControllerSpec extends PlaySpec with MockitoSugar with Re
   private var numberCalculationController: NumberCalculationController = _
 
   private var numberCalculationService: NumberCalculationService = _
+
+  implicit lazy val materializer: Materializer = app.materializer
 
 
   before {
@@ -42,7 +45,8 @@ class NumberCalculationControllerSpec extends PlaySpec with MockitoSugar with Re
     "return appropriate calculation result" when {
       "v2, v3, v4 values submitted" in {
         when(numberCalculationService.updateV4thValue(1,2,3)).thenReturn(CalculationResult(1))
-        val result = await(numberCalculationController.postV2V3V4(1,2,3).apply(FakeRequest()))
+
+        val result = await(call(numberCalculationController.postV2V3V4, FakeRequest().withJsonBody(Json.toJson(UpdateRequest(1,2,3)))))
 
         result mustBe Ok(Json.toJson(CalculationResult(1)))
 

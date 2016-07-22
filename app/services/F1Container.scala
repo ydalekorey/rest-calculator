@@ -2,6 +2,7 @@ package services
 
 import javax.inject.{Inject, Singleton}
 
+import com.google.inject.ImplementedBy
 import play.api.Configuration
 
 import scala.io.Source
@@ -9,6 +10,7 @@ import scala.io.Source
 /**
   * Created by ydalekorey on 7/22/16.
   */
+@ImplementedBy(classOf[CsvFileF1Container])
 trait F1Container {
   def getValueByIndex(v3: Int): Int
 
