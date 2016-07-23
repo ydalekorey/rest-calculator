@@ -2,8 +2,9 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET        /getf1v1             controllers.NumberCalculationController.getV1thResult(v1:Int)
+GET         /                    controllers.HomeController.index
+GET         /getf1v1             controllers.NumberCalculationController.getV1thResult(v1:Int)
 POST        /postv2v3v4          controllers.NumberCalculationController.postV2V3V4()
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)

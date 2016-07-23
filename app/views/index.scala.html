@@ -1,20 +1,32 @@
-@*
- * This template takes a single argument, a String containing a
- * message to display.
- *@
-@(message: String)
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>React tutorial</title>
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/form.css")">
+    </head>
+    <body>
+        <div>
+            f2[v1]=<span id="f2v1"></span>
+            <form id="v1-form">
+                <label for="v1">V1</label>
+                <input type="text" id="v1" name="v1">
+                <input type="submit" value="Get f2[v1]">
+            </form>
+        </div>
+        <hr/>
+        <div>
+            result: <span id="result"></span>
+            <form id="update-f2-form">
+                <label for="v2">V2</label>
+                <input type="text" id="v2" name="v2">
+                <label for="v3">V3</label>
+                <input type="text" id="v3" name="v3">
+                <label for="v4">V4</label>
+                <input type="text" id="v4" name="v4">
+                <input type="submit" value="Update f2[v4]">
+            </form>
+        </div>
 
-@*
- * Call the `main` template with two arguments. The first
- * argument is a `String` with the title of the page, the second
- * argument is an `Html` object containing the body of the page.
- *@
-@main("Welcome to Play") {
-
-    @*
-     * Get an `Html` object by calling the built-in Play welcome
-     * template and passing a `String` message.
-     *@
-    @play20.welcome(message, style = "Scala")
-
-}
+        <script data-main="@routes.Assets.versioned("javascripts/app.js")" src="@routes.Assets.versioned("lib/requirejs/require.js")"></script>
+    </body>
+</html>
