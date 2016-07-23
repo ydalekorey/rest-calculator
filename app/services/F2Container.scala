@@ -1,6 +1,8 @@
 package services
 
 import java.io.{File, PrintWriter}
+import java.util.concurrent.locks.ReentrantReadWriteLock.{ReadLock, WriteLock}
+import java.util.concurrent.locks.ReentrantReadWriteLock
 import javax.inject.{Inject, Singleton}
 
 import com.google.inject.ImplementedBy
@@ -23,7 +25,12 @@ class CsvFileF2Container @Inject() (val configuration: Configuration, f1Containe
 
   val f2Location = configuration.getString("f2.location").getOrElse("f2.csv")
 
-  def init(): Unit = {
+  val readWriteLock: ReentrantReadWriteLock = new ReentrantReadWriteLock()
+  val readLock: ReadLock = readWriteLock.readLock()
+  val writeLock: WriteLock = readWriteLock.writeLock()
+
+
+  def init(): Unit = withWriteLock {
     val size = f1Container.getSize()
 
     val zeroValues = List.fill(size)("0")
@@ -37,7 +44,7 @@ class CsvFileF2Container @Inject() (val configuration: Configuration, f1Containe
 
   init()
 
-  override def writeByIndex(v4: Int, i: Int): Unit = {
+  override def writeByIndex(v4: Int, i: Int): Unit = withWriteLock {
 
 
     val bufferedSource = Source.fromFile(f2Location)
@@ -52,7 +59,7 @@ class CsvFileF2Container @Inject() (val configuration: Configuration, f1Containe
     pw.close
   }
 
-  override def getValueByIndex(v1: Int): Int = {
+  override def getValueByIndex(v1: Int): Int = withReadLock(v1) { v1 =>
     val bufferedSource = Source.fromFile(f2Location)
 
     val numbers = bufferedSource.getLines.next().split(",").map(_.trim).map(_.toInt).toVector
@@ -60,5 +67,23 @@ class CsvFileF2Container @Inject() (val configuration: Configuration, f1Containe
     bufferedSource.close
 
     numbers(v1)
+  }
+
+  private def withWriteLock(block: () => Unit): Unit = {
+    writeLock.lock()
+    try {
+      block()
+    } finally {
+      writeLock.unlock()
+    }
+  }
+
+  private def withReadLock(v:Int)(block:Int => Int): Int = {
+    readLock.lock()
+    try {
+      block(v)
+    } finally {
+      readLock.unlock()
+    }
   }
 }
